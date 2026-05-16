@@ -26,4 +26,21 @@ export class CartPage {
       await this.expectItemInCart(productName);
     }
   }
+
+  async removeItemFromCart(productName: string) {
+  const item = this.cartItems.filter({ hasText: productName });
+
+  await expect(item).toBeVisible();
+  await item.getByRole('button', { name: 'Remove' }).click();
+}
+
+async expectItemNotInCart(productName: string) {
+  await expect(
+    this.page.locator('.inventory_item_name', { hasText: productName })
+  ).not.toBeVisible();
+}
+
+async expectCartIsEmpty() {
+  await expect(this.cartItems).toHaveCount(0);
+}
 }

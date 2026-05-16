@@ -43,4 +43,16 @@ export class InventoryPage {
     await this.cartLink.click();
     await expect(this.page).toHaveURL(/cart\.html/);
   }
+
+
+  async removeProductFromInventory(productName: string) {
+  const product = this.productCard(productName);
+
+  await expect(product).toBeVisible();
+  await product.getByRole('button', { name: 'Remove' }).click();
+}
+
+async expectCartBadgeNotVisible() {
+  await expect(this.cartBadge).not.toBeVisible();
+}
 }
