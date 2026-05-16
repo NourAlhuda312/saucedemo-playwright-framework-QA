@@ -5,12 +5,18 @@ export class InventoryPage {
   readonly productItems: Locator;
   readonly cartLink: Locator;
   readonly cartBadge: Locator;
+  readonly sortDropdown: Locator;
+readonly productNames: Locator;
+readonly productPrices: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.productItems = page.locator('.inventory_item');
     this.cartLink = page.locator('.shopping_cart_link');
     this.cartBadge = page.locator('.shopping_cart_badge');
+    this.sortDropdown = page.locator('[data-test="product-sort-container"]');
+this.productNames = page.locator('.inventory_item_name');
+this.productPrices = page.locator('.inventory_item_price');
   }
 
   async open() {
@@ -55,4 +61,21 @@ export class InventoryPage {
 async expectCartBadgeNotVisible() {
   await expect(this.cartBadge).not.toBeVisible();
 }
+
+
+async sortProductsBy(option: 'az' | 'za' | 'lohi' | 'hilo') {
+  await this.sortDropdown.selectOption(option);
+}
+
+// Get all product names currently displayed on the inventory page
+async getProductNames(): Promise<string[]> {
+  const names = await this.productNames.allTextContents();
+  return names.map(name => name.trim());
+}
+
+async getProductPrices(): Promise<string[]> {
+  return await this.productPrices.allTextContents();
+}
+
+
 }
